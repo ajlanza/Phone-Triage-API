@@ -20,6 +20,7 @@ solutionsRouter
     const knexInstance = req.app.get('db')
     SolutionsService.getAllSolutions(knexInstance)
       .then(solutions => {
+        console.log(solutions)
         res.json(solutions.map(serializeSolution))
       })
       .catch(next)
@@ -46,6 +47,19 @@ solutionsRouter
   })
   .get((req, res, next) => {
     res.json(serializeSolution(res.solution))  
+  })
+  .patch(jsonParser, (req, res, next) => {
+    const { worked_count } = req.body
+    // const updateCount ={ worked_count }
+    SolutionsService.updateWorkedCount(
+      req.app.get('db'),
+      req.params.solution_id,
+      { worked_count }
+    )
+      .then(numRowsAffected => {
+        res.status(204).end()
+      })
+      .catch(next)
   })
 
   module.exports = solutionsRouter;

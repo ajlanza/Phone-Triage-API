@@ -34,7 +34,35 @@ solutionsRouter
       content,
       worked_count: 0
     }
-    return SolutionsService.insertSolution(
+    
+    for (const[key, value] of Object.entries(newSolution))
+      if (value == null)
+        return res.status(400).json({
+          error: `Missing '${key}' in request body`
+        })
+      if(typeof(problem_id) != 'number'){
+        return res.status(400).json({
+          error: `problem_id must be a number`
+        })
+      }
+      if(typeof(problem_type) != 'number'){
+        return res.status(400).json({
+            error: `problem_type must be a number`
+        }) 
+      }
+      if(title.length < 3) {
+        return res.status(400).json({
+          error:`title must be at least 3 characters`
+        })
+      }
+      if(content.length < 3) {
+        return res.status(400).json({
+          error:`content must be at least 3 characters`
+        })
+      }
+      
+
+    SolutionsService.insertSolution(
       req.app.get('db'),
       newSolution
     )
@@ -58,7 +86,7 @@ solutionsRouter
       .then(solution => {
         if(!solution) {
           return res.status(400).json({
-            error: { message:`Solution does not exist`}
+            error: { message:`Solution does not exist.`}
           })
         }
         res.solution = solution

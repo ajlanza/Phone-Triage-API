@@ -1,9 +1,10 @@
 const express = require('express');
 const xss = require('xss');
+const path = require('path');
 const SolutionsService = require('./solutions-service');
 
 const solutionsRouter = express.Router();
-const jsonParser = express.json();
+const jsonBodyParser = express.json();
 
 const serializeSolution = solution => ({
   id: solution.id,
@@ -20,8 +21,28 @@ solutionsRouter
     const knexInstance = req.app.get('db')
     SolutionsService.getAllSolutions(knexInstance)
       .then(solutions => {
-        console.log(solutions)
         res.json(solutions.map(serializeSolution))
+      })
+      .catch(next)
+  })
+  .post(jsonBodyParser, ( req, res, next) => {
+    const { problem_id, problem_type, title, content,  } = req.body
+    const newSolution = { 
+      problem_id,
+      problem_type,
+      title,
+      content,
+      worked_count: 0
+    }
+    return SolutionsService.insertSolution(
+      req.app.get('db'),
+      newSolution
+    )
+      .then(solution => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${solution.id}`))
+          .json(SolutionsService.serializeSolution(solution))
       })
       .catch(next)
   })
@@ -48,7 +69,7 @@ solutionsRouter
   .get((req, res, next) => {
     res.json(serializeSolution(res.solution))  
   })
-  .patch(jsonParser, (req, res, next) => {
+  .patch(jsonBodyParser, (req, res, next) => {
     const { worked_count } = req.body
     // const updateCount ={ worked_count }
     SolutionsService.updateWorkedCount(

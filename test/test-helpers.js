@@ -69,12 +69,12 @@ function makeProblemsArray() {
       },
       {
         id: 9,
-        title: 'My battery is hot.', problem_type: 3
+        title: 'My battery is hot.', 
+        problem_type: 3
       },
       {
         id: 10,
         title: 'My battery doesn\t long long enough.', 
-        
         problem_type: 3
       },
       {
@@ -166,18 +166,18 @@ function makeUsersArray() {
   return [
     {
       username: 'User', 
-      firstname: 'Firstname', 
-      lastname:'Lastname', 
+      first_name: 'Firstname', 
+      last_name:'Lastname', 
       password: 'password'},
     {
       username: 'OneEye', 
-      firstname: 'Mads', 
-      lastname:'Mikkelsen', 
+      first_name: 'Mads', 
+      last_name:'Mikkelsen', 
       password: 'password'},
     {
       username: 'Dimmy', 
-      firstname: 'Dim', 
-      lastname:'Sum', 
+      first_name: 'Dim', 
+      last_name:'Sum', 
       password: 'password'},
   ]
 }
@@ -187,7 +187,7 @@ function makePhoneTriageFixtures() {
     const testProblems = makeProblemsArray()
     const testSolutions = makeSolutionsArray()
     return { testUsers, testProblems, testSolutions }
-  }
+}
 
 function makeExpectedProblem(problem) {
   return {
@@ -225,27 +225,30 @@ function seedUsers(db, users) {
     password: bcrypt.hashSync(user.password, 1)
   }))
   return db.into('users').insert(preppedUsers)
-    .then(() => 
+    .then(() => {
+      const place = users.length -1;
       db.raw(
         `SELECT setval('users_id_seq', ?)`,
-        [users[users.length -1].id,]
-      )
+        [users[place].id]
+      )}
     )
 }
 
 function seedPhoneTriageTables(db, users, problems, solutions) {
   return db.transaction(async trx => {
+    const problemsPlace = problems.length -1;
+    const solutionsPlace = solutions.length -1;
     await seedUsers(trx, users)
     await trx.into('problems').insert(problems)
     await trx.raw(
       `SELECT setval('problems_id_seq', ?)`,
-      [problems[problems.length -1].id],
+      [problems[problemsPlace].id],
     )
     if (solutions.length) {
       await trx.into('solutions').insert(solutions)
       await trx.raw(
         `SELECT setval('solutions_id_seq', ?)`,
-        [solutions[solutions.length -1].id],
+        [solutions[solutionsPlace].id],
       )
     }
   })

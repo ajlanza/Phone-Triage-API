@@ -61,18 +61,20 @@ describe('Problems Endpoints', function() {
       })
     })
 
-    context.skip (`Given there are problems in the database`, () => {
+    context(`Given there are problems in the database`, () => {
       beforeEach(`insert problems`, () => {
         helpers.seedPhoneTriageTables(
           db,
+          testUsers,
           testProblems,
           testSolutions
         )
       })
       it(`responds with 200 and the specified problem`)
         const problemId = 2;
+        const testProblemIndex = problemId -1;
         const expectedProblem = helpers.makeExpectedProblem(
-          testProblems[problemId - 1],
+          testProblems[testProblemIndex],
         )
 
         return supertest(app)

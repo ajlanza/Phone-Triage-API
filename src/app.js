@@ -19,18 +19,22 @@ app.use(helmet());
 app.use(
     cors(
     {
-         origin: CLIENT_ORIGIN
+   origin: CLIENT_ORIGIN
     }
-    )
+  )
 );
-
+console.log('client origin')
 app.use('/api/problems', problemsRouter);
 app.use('/api/solutions', solutionsRouter);
 app.use('/api/users', usersRouter)
 app.use('/api/types', typesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/help', helpRouter);
-
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next()
+});
 app.get('/', (req,res) => {
   // res.send('Hello, universe!');
   res.json({ok: true});

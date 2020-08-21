@@ -63,13 +63,11 @@ describe('Problems Endpoints', function() {
 
     context(`Given there are problems in the database`, () => {
       beforeEach(`insert problems`, () => {
-        helpers.seedPhoneTriageTables(
-          db,
-          testUsers,
-          testProblems,
-          testSolutions
-        )
+        return db
+          .into('problems')
+          .insert(testProblems)  
       })
+      
       it(`responds with 200 and the specified problem`)
         const problemId = 2;
         const testProblemIndex = problemId -1;

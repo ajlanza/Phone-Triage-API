@@ -131,7 +131,7 @@ describe('Users Endpoints', function() {
         return supertest(app)
           .post('/api/users')
           .send(duplicateUer)
-          .expect(400, { error: `Username already taken` })
+          .expect(400, { error: `Username already taken, please select a different one.` })
       })
     })
 

@@ -28,7 +28,14 @@ problemsRouter
       problem_type,
       title
     }
-    return ProblemsService.insertProblem(
+
+    for (const[key, value] of Object.entries(newProblem))
+      if(value == null)
+        return res.status(400).json({
+          error:`Missing '${key}' in request body`
+        })
+    
+    ProblemsService.insertProblem(
       req.app.get('db'),
       newProblem
     )

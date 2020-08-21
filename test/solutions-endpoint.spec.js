@@ -1,9 +1,8 @@
-const knex = require('knex')
-const app = require('../src/app')
-const { makeSolutionsArray } = require('./solutions.fixtures')
-const { makeProblemsArray } = require('./problems.fixtures')
-const supertest = require('supertest')
-const { expect } = require('chai')
+const knex = require('knex');
+const app = require('../src/app');
+const helpers = require('./test-helpers');
+const supertest = require('supertest');
+const { expect } = require('chai');
 
 describe('Solutions Endpoints', function() {
   let db 
@@ -32,8 +31,8 @@ describe('Solutions Endpoints', function() {
     })
 
     context(`Given there are solutions in the database`, () => {
-      const testProblems = makeProblemsArray();
-      const testSolutions = makeSolutionsArray();
+      const testProblems = helpers.makeProblemsArray();
+      const testSolutions = helpers.makeSolutionsArray();
 
       beforeEach('insert solutions', () => {
         return db

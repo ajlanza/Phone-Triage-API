@@ -68,7 +68,7 @@ describe('Problems Endpoints', function() {
           .insert(testProblems)  
       })
       
-      it(`responds with 200 and the specified problem`)
+      it(`responds with 200 and the specified problem`, () => {
         const problemId = 2;
         const testProblemIndex = problemId -1;
         const expectedProblem = helpers.makeExpectedProblem(
@@ -78,6 +78,7 @@ describe('Problems Endpoints', function() {
         return supertest(app)
           .get(`/api/problems/${problemId}`)
           .expect(200, expectedProblem)
+        })
     })
   })
 })

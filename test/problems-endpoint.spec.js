@@ -67,7 +67,14 @@ describe('Problems Endpoints', function() {
           .into('problems')
           .insert(testProblems)  
       })
-      
+
+      it(`responds with 400 if not given an integer`, () => {
+        const problemId = 'not an integer';
+        return supertest(app)
+          .get(`/api/problems/${problemId}`)
+          .expect(400, { error: { message: `Id must be an integer.`} })
+      })
+
       it(`responds with 200 and the specified problem`, () => {
         const problemId = 2;
         const testProblemIndex = problemId -1;

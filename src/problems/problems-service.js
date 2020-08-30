@@ -1,6 +1,12 @@
 const xss = require('xss');
 
 const ProblemsService = {
+  validateProblems(problemId) {
+    if (isNaN(problemId)) {
+      return 'Id must be an integer.'
+    }
+    return null
+  },
   getAllProblems(knex) {
     return knex.select('*').from('problems')
   },

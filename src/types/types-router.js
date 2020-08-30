@@ -25,9 +25,15 @@ typesRouter
 typesRouter
   .route('/:type_id')
   .all((req, res, next) => {
+    const typeId = parseInt(req.params.type_id);
+    const typeError = TypesService.validateTypes(typeId);
+
+    if (typeError)
+      return res.status(400).json({ error: { message: typeError } })
+    
     TypesService.getById(
       req.app.get('db'),
-      req.params.type_id
+      typeId
     )
       .then(type => {
         if (!type) {

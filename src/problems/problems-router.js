@@ -51,9 +51,14 @@ problemsRouter
 problemsRouter
   .route('/:problem_id')
   .all((req, res, next) => {
+    const problemId = parseInt(req.params.problem_id);
+    const problemError = ProblemsService.validateProblems(problemId);
+    if(problemError)
+      return res.status(400).json({ error: { message: problemError } })
+    
     ProblemsService.getById(
       req.app.get('db'),
-      req.params.problem_id
+      problemId
     )
       .then(problem => {
         if (!problem) {

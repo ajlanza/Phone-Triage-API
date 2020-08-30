@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 
-function makeProblemTypesArray() {
+function makeTypesArray() {
     return [
       {
         id: 1,
@@ -19,8 +19,8 @@ function makeProblemTypesArray() {
       },
       {
         id: 4,
-        name: 'Software', 
-        type: 'software'
+        name: 'Other', 
+        type: 'other'
       }
     ]
   }
@@ -197,6 +197,14 @@ function makeExpectedProblem(problem) {
   }
 }
 
+function makeExpectedType(type) {
+  return {
+    id: type.id,
+    name: type.name,
+    type: type.type
+  }
+}
+
 function cleanTables(db) {
   return db.transaction(trx =>
     trx.raw(
@@ -256,11 +264,12 @@ function seedPhoneTriageTables(db, users, problems, solutions) {
   
   module.exports = {
     makeProblemsArray,
-    makeProblemTypesArray,
+    makeTypesArray,
     makeSolutionsArray,
     makeUsersArray,
     makePhoneTriageFixtures,
     makeExpectedProblem,
+    makeExpectedType,
 
     cleanTables,
     seedUsers,

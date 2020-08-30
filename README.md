@@ -1,26 +1,47 @@
-# Express Boilerplate!
+# Phone Triage API
 
-This is a boilerplate project used for starting a new project.
+API designed to process problem types, specific problems, solutions, and users of Phone Triage site.
 
-## Set up
+## API Endpoints:
 
-Complete the following steps to stat a new project (NEW-PROJECT NAME):
 
-1. Clone this repository to your local machine 'git clone BOILERPLATE-URL NEW-PROJECTS-NAME'
-2. 'cd' into cloned repository
-3. Make a fresh start of the git history for this project with 'rm -rf .git && git init'
-4. Install the node dependencies 'npm install'
-5. Move the example Environment file to '.env' that will be ignored by git and read by the express server 'mv example.env .env'
-6. Edit the contents of the 'package.json' to use NEW-PROJECT-NAME instead of '"name": "express-boilerplate",'
+### /api/types
+GET: returns all problem types
+* Success 
+  * Code: 200
+  * Content:  
+        [  
+                { **id**: integer, **name**: "string", **type**: "string" },  
+                { **id**: integer, **name**: "string", **type**: "string" }  
+        ]
 
-## Scripts
-
-Start the application 'npm start'
-
-Start nodemon for the application 'npm run dev'
-
-Run the tests 'npm test'
-
-## Deploying
-
-When you new project is ready for deployment, add a new Heroku application with 'heroku create'. This will make a new git remote called "heroku" and you can then 'npm run deploy' which will push to this remote's master branch.
+### /api/types/:id
+GET: 
+* Success 
+  * Code: 200
+  * Content:  
+  { **id**: integer, **title**: "string", **type**: "string" }
+* Error
+  * Code: 40X
+  * Content:  
+  { error: { message: "Error message string." } }
+   
+### /api/problems
+GET: returns all problems
+* Success 
+  * Code: 200
+  * Content:  
+  [  
+  { **id**: integer, **title**: "string", **problem_type**: integer },  
+  { **id**: integer, **title**: "string", **problem_type**: integer }  
+  ]
+### /api/problems:id
+GET: returns specific problem
+* Success 
+  * Code: 200
+  * Content:  
+  { **id**: 1, **title**: "string", **problem_type**: integer }
+* Error
+  * Code: 40X
+  * Content:  
+  { error: { message: "Error message string." } }

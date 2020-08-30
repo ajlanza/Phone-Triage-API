@@ -2,6 +2,7 @@ const express = require('express');
 const xss = require('xss');
 const path = require('path');
 const ProblemsService = require('./problems-service');
+const TypesService = require('../types/types-service');
 
 const problemsRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -34,16 +35,37 @@ problemsRouter
         return res.status(400).json({
           error:`Missing '${key}' in request body`
         })
-    
-    ProblemsService.insertProblem(
-      req.app.get('db'),
-      newProblem
+    // validate the problem type
+    const typeError = TypesService.validateTypes(problem_type);
+      if(typeError){
+        return res.status(400).json({ error: { message : "problem_type must be an integer" }})
+      }
+    // check if the problem type exists in the database
+    TypesService.getById(
+      req.app.get('db'), 
+      problem_type
     )
-      .then(problem => {
-        res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${problem.id}`))
-          .json(ProblemsService.serializeProblem(problem))
+    .then((type) => {
+      // if it doesn't then return an error message
+      if(!type)
+        return res.status(400).json({
+          error: { message: "Incorrect problem type"}
+        })
+      })
+    .catch(next)
+      .then(() => {
+        // if it does then add the new problem
+        ProblemsService.insertProblem(
+        req.app.get('db'),
+        newProblem
+        )
+        .then(problem => {
+          res
+            .status(201)
+            .location(path.posix.join(req.originalUrl, `/${problem.id}`))
+            .json(ProblemsService.serializeProblem(problem))
+        })
+        .catch(next)
       })
       .catch(next)
   })

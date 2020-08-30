@@ -88,4 +88,51 @@ describe('Problems Endpoints', function() {
         })
     })
   })
+
+  describe.only(`POST api/problems`, () => {
+    context(`Validation`, () => {
+      it(`responds with 400 when title field is missing`, () => {
+        const bodyWithoutTitle = { problem_type: 1 }
+        return supertest(app)
+          .post(`/api/problems`)
+          .send(bodyWithoutTitle)
+          .expect(400, { error: `Missing 'title' in request body` })
+      })
+      it(`responds with 400 when problem_type is missing`, () => {
+        const bodyWithoutType = { title: 'problem title' }
+        return supertest(app)
+          .post(`/api/problems`)
+          .send (bodyWithoutType)
+          .expect(400, { error: `Missing 'problem_type' in request body` })
+      })
+      it(`responds with 400 when problem_type is not an integer`, () => {
+        const incorrectType = [{
+          problem_type: 'not an integer',
+          title: 'problem title'
+        }]
+        return supertest(app)
+          .post(`/api/problems`)
+          .send (incorrectType)
+          .expect(400, { error: `Missing 'problem_type' in request body` })
+      })
+    })
+
+    context(`Happy path`,() => {
+      it(`responds with 201`, () => {
+        const correctBody = {
+          problem_type: 1,
+          title: 'Problem title'
+        }
+        return supertest(app)
+          .post(`/api/problems`)
+          .send(correctBody)
+          .expect(201)
+          .expect(res => {
+            expect(res.body).to.have.property('id')
+            expect(res.body.problem_type).to.eql(correctBody.problem_type)
+            expect(res.body.title).to.eql(correctBody.title)
+          })
+      })
+    })
+  }) 
 })

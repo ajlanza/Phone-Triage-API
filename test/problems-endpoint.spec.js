@@ -89,7 +89,7 @@ describe('Problems Endpoints', function() {
     })
   })
 
-  describe.only(`POST api/problems`, () => {
+  describe(`POST api/problems`, () => {
     context(`Validation`, () => {
       it(`responds with 400 when title field is missing`, () => {
         const bodyWithoutTitle = { problem_type: 1 }

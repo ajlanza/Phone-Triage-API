@@ -1,6 +1,8 @@
 # Phone Triage API
 
-API designed to process problem types, specific problems, solutions, and users of Phone Triage site.
+API built with Node and Express to utilize a PostgresQL database.
+Testing accomplished with Mocha and Chai.  
+The api is designed to process types of problems, specific problems, solutions to problems, and users of the Phone Triage site.
 
 ## API Endpoints:
 
@@ -98,6 +100,64 @@ POST:
     { error: "Error message string." }
 
 ### /api/solutions:id
+GET: returns specific solution
+* Success 
+  * Code: 200
+  * Content:  
+  {
+    **id**: integer,
+    **problem_id**: 1,
+    **problem_type**: integer,
+    **title**: "string",
+    **content**: "string",
+    **worked_count**: integer
+  }
+* Error
+  * Code: 40X
+  * Content:  
+  { error: { message: "Error message string." } }
+
+  ### /api/solutions
+GET: returns all solutions
+* Success
+  * Code: 200
+  * Content: 
+  [  
+    {
+    **id**: integer,
+    **problem_id**: integer,
+    **problem_type**: integer,
+    **title**: "string",
+    **content**: "string",
+    **worked_count**: integer
+    },
+    **id**: integer,
+    **problem_id**: integer,
+    **problem_type**: integer,
+    **title**: "string",
+    **content**: "string",
+    **worked_count**: integer
+    }
+    ]
+
+POST: 
+* Success
+  * Code: 201
+  * Content:  
+  {
+    **id**: integer,
+    **problem_id**: 1,
+    **problem_type**: integer,
+    **title**: "string",
+    **content**: "string",
+    **worked_count**: integer
+  }
+* Error
+  * Code: 40X
+  * Content: 
+    { error: "Error message string." }
+
+### /api/users
 GET: returns specific solution
 * Success 
   * Code: 200

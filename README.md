@@ -38,7 +38,14 @@ GET: returns all problems
   { **id**: integer, **title**: "string", **problem_type**: integer }  
   ]
 
-POST: 
+POST: add a problem to the database
+
+Required in body:
+ { 
+ **problem_type**: integer,
+ **title**: "string",
+ }
+ 
 * Success
   * Code: 201
   * Content:
@@ -82,7 +89,16 @@ GET: returns all solutions
     }
     ]
 
-POST: 
+POST: add a solution to the database
+
+Required in body:
+ { 
+ **problem_id**: integer,
+ **problem_type**: integer,
+ **title**: "string",
+ **content**: "string"
+ }
+ 
 * Success
   * Code: 201
   * Content:  
@@ -117,58 +133,46 @@ GET: returns specific solution
   * Content:  
   { error: { message: "Error message string." } }
 
-  ### /api/solutions
-GET: returns all solutions
-* Success
-  * Code: 200
-  * Content: 
-  [  
-    {
-    **id**: integer,
-    **problem_id**: integer,
-    **problem_type**: integer,
-    **title**: "string",
-    **content**: "string",
-    **worked_count**: integer
-    },
-    **id**: integer,
-    **problem_id**: integer,
-    **problem_type**: integer,
-    **title**: "string",
-    **content**: "string",
-    **worked_count**: integer
-    }
-    ]
+### /api/users
 
-POST: 
-* Success
+POST: create a new user
+
+Required in body:
+ { 
+ **username**: "string",
+ **password**: "string",
+ **first_name**: "string",
+ **last_name**: "string"
+ }
+ 
+* Success 
   * Code: 201
   * Content:  
   {
     **id**: integer,
-    **problem_id**: 1,
-    **problem_type**: integer,
-    **title**: "string",
-    **content**: "string",
-    **worked_count**: integer
+    **username**: "string",
+    **first_name**: "string",
+    **last_name**: "string"
   }
 * Error
   * Code: 40X
-  * Content: 
-    { error: "Error message string." }
-
-### /api/users
-GET: returns specific solution
-* Success 
+  * Content:  
+  { error: { message: "Error message string." } }
+  
+ ### /api/auth/login
+ POST: get an auth token
+ 
+ Required in body:
+ { 
+ **username**: "string",
+ **password**: "string"
+ }
+ 
+ * Success 
   * Code: 200
   * Content:  
   {
-    **id**: integer,
-    **problem_id**: 1,
-    **problem_type**: integer,
-    **title**: "string",
-    **content**: "string",
-    **worked_count**: integer
+    **authToken**: "string"
   }
 * Error
   * Code: 40X

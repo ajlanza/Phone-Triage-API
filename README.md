@@ -4,6 +4,12 @@ API built with Node and Express to utilize a PostgresQL database.
 Testing accomplished with Mocha and Chai.  
 The api is designed to process types of problems, specific problems, solutions to problems, and users of the Phone Triage site.
 
+## Live site:  
+https://phone-triage.vercel.app/screen
+
+## Client repo:
+https://github.com/ajlanza/Phone-Triage
+
 ## API Endpoints:
 
 
@@ -178,3 +184,4 @@ Required in body:
   * Code: 40X
   * Content:  
   { error: { message: "Error message string." } }
+
